@@ -1,10 +1,13 @@
 //Servidor************
-const express = require('express');
-const moment = require('moment');
+import express from "express"
+import moment from "moment"
 const aplicacion = express();
-const { Server: HttpServer } = require('http');
-const { Server: IOServer } = require('socket.io');
-const Contenedor = require('./contenedor/contenedorSQL.js');
+
+import { Server } from "socket.io"
+import http from "http"
+const server = http.createServer(aplicacion)
+const io = new Server(server)
+import { Contenedor } from "./contenedor/contenedorSQL.js"
 
 
 import { options } from "./connections/options.js"
@@ -19,8 +22,8 @@ const publicRoot = './public';
 aplicacion.use(express.json());
 aplicacion.use(express.urlencoded({ extended: true }));
 
-const httpServer = new HttpServer(aplicacion);
-const io = new IOServer(httpServer);
+// const httpServer = new HttpServer(aplicacion);
+// const io = new IOServer(httpServer);
 
 //***** Hacemos la carpeta public visible
 aplicacion.use(express.static(publicRoot));
@@ -39,11 +42,10 @@ aplicacion.get('/', (peticion, respuesta) => {
 
 
 //Servidor************
-const servidor = httpServer.listen(port, () => {
-  console.log(`Servidor escuchando: ${servidor.address().port}`);
-});
-
-servidor.on('error', error => console.log(`Error: ${error}`));
+server.listen(port, () => {
+    console.log(`Servidor escuchando http://localhost:${port}`)
+})
+server.on('error', error => console.log(`Error: ${error}`));
 //****************
 
 // MySQL, Sqlite3
