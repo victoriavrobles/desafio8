@@ -16,4 +16,4 @@ sqlite3: {
     },
     useNullAsDefault: true
 }
-};
+};  
